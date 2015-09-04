@@ -10,5 +10,5 @@ object PersonDto {
   implicit val formatter: Format[PersonDto] = (
     (__ \ "age").format[Int] and
       (__ \ "name").format[NameDto]
-    )(PersonDto.apply _, unlift(PersonDto.unapply))
+    )(PersonDto.apply, unlift(PersonDto.unapply))
 }

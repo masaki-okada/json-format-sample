@@ -10,5 +10,5 @@ object NameDto {
   implicit val formatter: Format[NameDto] = (
     (__ \ "firstName").format[String] and
       (__ \ "lastName").format[String]
-    )(NameDto.apply _, unlift(NameDto.unapply))
+    )(NameDto.apply, unlift(NameDto.unapply))
 }

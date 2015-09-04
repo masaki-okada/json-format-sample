@@ -36,7 +36,14 @@ class PersonApiSpec extends Specification {
         )
       )
       status(result) mustEqual BAD_REQUEST
-      contentAsString(result) mustEqual "親切なエラーメッセージ"
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.age": [{"msg": ["error.path.missing"], "args": []}],
+          |    "obj.name": [{"msg": ["error.path.missing"], "args": []}]
+          |}
+        """.stripMargin
+      )
     }
 
     "add 正常系" in new WithApplication {

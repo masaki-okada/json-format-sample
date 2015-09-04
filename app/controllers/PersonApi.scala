@@ -6,16 +6,12 @@ import play.api.mvc._
 
 class PersonApi extends Controller {
 
-  /**
-   * 追加
-   * @return
-   */
   def add = Action(parse.json) { implicit request =>
     request.body.validate[PersonDto].map { person =>
       Ok("登録完了")
     }.recoverTotal { errors =>
-//      BadRequest(JsError.toJson(e = errors))
-      BadRequest("親切なエラーメッセージ")
+      val errorJson = JsError.toJson(e = errors)
+      BadRequest(errorJson)
     }
   }
 
