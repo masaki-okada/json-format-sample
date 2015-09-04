@@ -8,8 +8,8 @@ case class NameDto(firstName: String, middleName: Option[String], lastName: Stri
 
 object NameDto {
   implicit val formatter: Format[NameDto] = (
-    (__ \ "firstName").format[String] and
+    (__ \ "firstName").format[String](minLength[String](2) <~ maxLength[String](20)) and
       (__ \ "middleName").formatNullable[String] and
-      (__ \ "lastName").format[String]
+      (__ \ "lastName").format[String](minLength[String](2) <~ maxLength[String](20))
     )(NameDto.apply, unlift(NameDto.unapply))
 }
