@@ -16,12 +16,13 @@ import play.api.test._
 class PersonApiSpec extends Specification {
 
   "PersonApi" should {
+    val API = "/api/persion/add"
 
     "add 異常系" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/persion/add"
+          , API
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -46,11 +47,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "add 正常系" in new WithApplication {
+    "add 正常系1" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/persion/add"
+          , API
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -58,6 +59,29 @@ class PersonApiSpec extends Specification {
               | "age": 36
               | , "name": {
               |   "firstName": "fName"
+              |   , "lastName": "lName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual "登録完了"
+    }
+
+    "add 正常系2" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "name": {
+              |   "firstName": "fName"
+              |   , "middleName": "せばすちゃん"
               |   , "lastName": "lName"
               | }
               |}
