@@ -10,8 +10,7 @@ class PersonApi extends Controller {
     request.body.validate[PersonDto].map { person =>
       Ok("登録完了")
     }.recoverTotal { errors =>
-      val errorJson = JsError.toJson(e = errors)
-      BadRequest(errorJson)
+      BadRequest(JsError.toJson(e = errors))
     }
   }
 
