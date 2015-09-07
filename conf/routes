@@ -11,4 +11,4 @@ GET         /assets/*file             controllers.Assets.versioned(path="/public
 # API
 # Add Persion
 POST        /api/v1/person/register        @controllers.PersonApi.register1
-#POST        /api/v2/person/register        @controllers.PersonApi.register2
+POST        /api/v2/person/register        @controllers.PersonApi.register2
