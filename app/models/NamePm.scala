@@ -4,21 +4,21 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json.{Format, _}
 
-case class NameDto(firstName: String, middleName: Option[String], lastName: String)
+case class NamePm(firstName: String, middleName: Option[String], lastName: String)
 
-object NameDto {
+object NamePm {
 
-  implicit val reader: Reads[NameDto] = (
+  implicit val reader: Reads[NamePm] = (
     (__ \ "firstName").read[String](minLength[String](2) <~ maxLength[String](20)) and
       (__ \ "middleName").readNullable[String](maxLength[String](20)) and
       (__ \ "lastName").read[String](minLength[String](2) <~ maxLength[String](20))
-    )(NameDto.apply _)
+    )(NamePm.apply _)
 
-  implicit val writer: Writes[NameDto] = (
+  implicit val writer: Writes[NamePm] = (
     (__ \ "firstName").write[String] and
       (__ \ "middleName").writeNullable[String] and
       (__ \ "lastName").write[String]
-    )(unlift(NameDto.unapply))
+    )(unlift(NamePm.unapply))
 
-  implicit val formatter: Format[NameDto] = Format(reader, writer)
+  implicit val formatter: Format[NamePm] = Format(reader, writer)
 }
