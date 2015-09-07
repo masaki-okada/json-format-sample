@@ -293,52 +293,51 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "be success" in new WithApplication {
-      "If the no middle name" in new WithApplication {
-        val Some(result) = route(
-          FakeRequest(
-            POST
-            , "/api/person/add"
-            , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
-            , Json.parse(
-              """
-                |{
-                | "age": 36
-                | , "name": {
-                |   "firstName": "firstName"
-                |   , "lastName": "lastName"
-                | }
-                |}
-              """.stripMargin)
-          )
+    "be success. If the no middle name." in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , "/api/person/add"
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
         )
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual "登録完了"
-      }
-
-      "If the middle name exists" in new WithApplication {
-        val Some(result) = route(
-          FakeRequest(
-            POST
-            , "/api/person/add"
-            , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
-            , Json.parse(
-              """
-                |{
-                | "age": 36
-                | , "name": {
-                |   "firstName": "firstName"
-                |   , "middleName": "middleName"
-                |   , "lastName": "lastName"
-                | }
-                |}
-              """.stripMargin)
-          )
-        )
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual "登録完了"
-      }
-
+      )
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual "登録完了"
     }
+
+    "be success. If the middle name exists." in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , "/api/person/add"
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "middleName": "middleName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual "登録完了"
+    }
+
   }
+
 }
