@@ -137,6 +137,38 @@ class PersonApiSpec extends Specification {
       )
     }
 
+    "display json parse error caused by PersonDto(blood type are A or B or O or AB)" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , "/api/person/add"
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "bloodType": "C"
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.bloodType": [{
+          |        "msg": ["A or B or O or AB"]
+          |        , "args": []
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
     "display json parse error caused by NameDto(first name is less than minimum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
