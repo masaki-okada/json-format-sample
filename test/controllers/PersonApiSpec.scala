@@ -395,5 +395,28 @@ class PersonApiSpec extends Specification {
       contentAsString(result) mustEqual "登録完了"
     }
 
+    "be success. If the favorite numbers exists." in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , "/api/v1/person/add"
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "favoriteNumbers": [3, 7, 8]
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual "登録完了"
+    }
+
   }
 }
