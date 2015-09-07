@@ -10,4 +10,4 @@ GET         /assets/*file           controllers.Assets.versioned(path="/public",
 
 # API
 # Add Persion
-POST        /api/persion/add        @controllers.PersonApi.add
+POST        /api/person/add        @controllers.PersonApi.add

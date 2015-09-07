@@ -16,14 +16,11 @@ import play.api.test._
 class PersonApiSpec extends Specification {
 
   "PersonApi#add" should {
-    val API = "/api/persion/add"
-
-    // パスエラー age, name
-    "missing path error, age, name" in new WithApplication {
+    "display json parse error caused by PersonDto(age, name are missing)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -48,12 +45,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // パスエラー
-    "missing path error, name" in new WithApplication {
+    "display json parse error caused by NameDto(firstName and lastName are missing)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -79,12 +75,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 年齢　最小値エラー
-    "validation error caused by min of age" in new WithApplication {
+    "display json parse error caused by PersonDto(age is less than minimum value)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -111,12 +106,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 年齢　最大値エラー
-    "validation error caused by min of age" in new WithApplication {
+    "display json parse error caused by PersonDto(age is more than maximum value)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -143,12 +137,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 名前　最小文字数エラー
-    "validation error caused by min length of first name" in new WithApplication {
+    "display json parse error caused by PersonDto(first name is less than minimum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -175,12 +168,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 名前　最大文字数エラー
-    "validation error caused by min length of first name" in new WithApplication {
+    "display json parse error caused by PersonDto(first name is more than maximum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -207,12 +199,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 苗字　最小文字数エラー
-    "validation error caused by min length of last name" in new WithApplication {
+    "display json parse error caused by PersonDto(last name is less than minimum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -239,12 +230,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 名前　最大文字数エラー
-    "validation error caused by min length of last name" in new WithApplication {
+    "display json parse error caused by PersonDto(last name is more than maximum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -271,12 +261,11 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // ミドルネーム　最大文字数エラー
-    "validation error caused by max length of middle name" in new WithApplication {
+    "display json parse error caused by PersonDto(middle name is more than maximum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
-          , API
+          , "/api/person/add"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -304,13 +293,12 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    // 正常系
-    "add person" in new WithApplication {
-      "success" in new WithApplication {
+    "be success" in new WithApplication {
+      "If the no middle name" in new WithApplication {
         val Some(result) = route(
           FakeRequest(
             POST
-            , API
+            , "/api/person/add"
             , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
             , Json.parse(
               """
@@ -328,11 +316,11 @@ class PersonApiSpec extends Specification {
         contentAsString(result) mustEqual "登録完了"
       }
 
-      "append option type middle name" in new WithApplication {
+      "If the middle name exists" in new WithApplication {
         val Some(result) = route(
           FakeRequest(
             POST
-            , API
+            , "/api/person/add"
             , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
             , Json.parse(
               """
@@ -340,7 +328,7 @@ class PersonApiSpec extends Specification {
                 | "age": 36
                 | , "name": {
                 |   "firstName": "firstName"
-                |   , "middleName": "せばすちゃん"
+                |   , "middleName": "middleName"
                 |   , "lastName": "lastName"
                 | }
                 |}
