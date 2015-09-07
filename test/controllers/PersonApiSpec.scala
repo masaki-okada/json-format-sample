@@ -16,6 +16,7 @@ import play.api.test._
 class PersonApiSpec extends Specification {
 
   "PersonApi#add" should {
+
     "display json parse error caused by PersonDto(age, name are missing)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
@@ -370,6 +371,28 @@ class PersonApiSpec extends Specification {
       contentAsString(result) mustEqual "登録完了"
     }
 
-  }
+    "be success. If the blood type exists.(A)" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , "/api/person/add"
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "bloodType": "A"
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual "登録完了"
+    }
 
+  }
 }
