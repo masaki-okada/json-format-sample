@@ -78,50 +78,51 @@ class PersonApiSpec extends Specification {
         """.stripMargin
       )
 
-    "success" in new WithApplication {
-      val Some(result) = route(
-        FakeRequest(
-          POST
-          , API
-          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
-          , Json.parse(
-            """
-              |{
-              | "age": 36
-              | , "name": {
-              |   "firstName": "firstName"
-              |   , "lastName": "lastName"
-              | }
-              |}
-            """.stripMargin)
+      "success" in new WithApplication {
+        val Some(result) = route(
+          FakeRequest(
+            POST
+            , API
+            , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+            , Json.parse(
+              """
+                |{
+                | "age": 36
+                | , "name": {
+                |   "firstName": "firstName"
+                |   , "lastName": "lastName"
+                | }
+                |}
+              """.stripMargin)
+          )
         )
-      )
-      status(result) mustEqual OK
-      contentAsString(result) mustEqual "登録完了"
-    }
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual "登録完了"
+      }
 
-    "append option type middle name" in new WithApplication {
-      val Some(result) = route(
-        FakeRequest(
-          POST
-          , API
-          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
-          , Json.parse(
-            """
-              |{
-              | "age": 36
-              | , "name": {
-              |   "firstName": "firstName"
-              |   , "middleName": "せばすちゃん"
-              |   , "lastName": "lastName"
-              | }
-              |}
-            """.stripMargin)
+      "append option type middle name" in new WithApplication {
+        val Some(result) = route(
+          FakeRequest(
+            POST
+            , API
+            , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+            , Json.parse(
+              """
+                |{
+                | "age": 36
+                | , "name": {
+                |   "firstName": "firstName"
+                |   , "middleName": "せばすちゃん"
+                |   , "lastName": "lastName"
+                | }
+                |}
+              """.stripMargin)
+          )
         )
-      )
-      status(result) mustEqual OK
-      contentAsString(result) mustEqual "登録完了"
-    }
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual "登録完了"
+      }
 
+    }
   }
 }
