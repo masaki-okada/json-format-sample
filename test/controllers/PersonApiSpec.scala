@@ -15,7 +15,7 @@ import play.api.test._
 @RunWith(classOf[JUnitRunner])
 class PersonApiSpec extends Specification {
 
-  "PersonApi#add" should {
+  "PersonApi#register" should {
 
     "display json parse error caused by PersonDto(age, name are missing)" in new WithApplication {
       val Some(result) = route(
@@ -324,6 +324,32 @@ class PersonApiSpec extends Specification {
           |}
         """.stripMargin
       )
+    }
+
+    "display json parse error caused by PersonDto(favorite numbers)" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , "/api/v1/person/register"
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 36
+              | , "favoriteNumbers": ["3", 7, 8]
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{"obj.favoriteNumbers[0]":[{"msg":["error.expected.jsnumber"],"args":[]}]}
+        """.stripMargin)
     }
 
     "be success. If the no middle name." in new WithApplication {
