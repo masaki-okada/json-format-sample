@@ -18,6 +18,7 @@ class PersonApiSpec extends Specification {
   "PersonApi#add" should {
     val API = "/api/persion/add"
 
+    // パスエラー age, name
     "missing path error, age, name" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
@@ -47,7 +48,231 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "max length error of middle name" in new WithApplication {
+    // パスエラー
+    "missing path error, name" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 1
+              | , "name": {
+              |   "ccc": "firstName"
+              |   , "ddd": "middleName"
+              |   , "eee": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.name.lastName": [{"msg": ["error.path.missing"], "args": []}],
+          |    "obj.name.firstName": [{"msg": ["error.path.missing"], "args": []}]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // 年齢　最小値エラー
+    "validation error caused by min of age" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": -1
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.age": [{
+          |        "msg": ["error.min"]
+          |        , "args": [0]
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // 年齢　最大値エラー
+    "validation error caused by min of age" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 201
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.age": [{
+          |        "msg": ["error.max"]
+          |        , "args": [200]
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // 名前　最小文字数エラー
+    "validation error caused by min length of first name" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 1
+              | , "name": {
+              |   "firstName": ""
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.name.firstName": [{
+          |        "msg": ["error.minLength"]
+          |        , "args": [2]
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // 名前　最大文字数エラー
+    "validation error caused by min length of first name" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 1
+              | , "name": {
+              |   "firstName": "012345678901234567890"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.name.firstName": [{
+          |        "msg": ["error.maxLength"]
+          |        , "args": [20]
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // 苗字　最小文字数エラー
+    "validation error caused by min length of last name" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 1
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": ""
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.name.lastName": [{
+          |        "msg": ["error.minLength"]
+          |        , "args": [2]
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // 名前　最大文字数エラー
+    "validation error caused by min length of last name" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 1
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "lastName": "012345678901234567890"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.name.lastName": [{
+          |        "msg": ["error.maxLength"]
+          |        , "args": [20]
+          |    }]
+          |}
+        """.stripMargin
+      )
+    }
+
+    // ミドルネーム　最大文字数エラー
+    "validation error caused by max length of middle name" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -77,7 +302,10 @@ class PersonApiSpec extends Specification {
           |}
         """.stripMargin
       )
+    }
 
+    // 正常系
+    "add person" in new WithApplication {
       "success" in new WithApplication {
         val Some(result) = route(
           FakeRequest(
