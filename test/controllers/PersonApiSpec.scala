@@ -345,7 +345,7 @@ class PersonApiSpec extends Specification {
         )
       )
       status(result) mustEqual OK
-      contentAsString(result) mustEqual "登録完了"
+      contentAsString(result) mustEqual "Has registered."
     }
 
     "be success. If the middle name exists." in new WithApplication {
@@ -368,7 +368,7 @@ class PersonApiSpec extends Specification {
         )
       )
       status(result) mustEqual OK
-      contentAsString(result) mustEqual "登録完了"
+      contentAsString(result) mustEqual "Has registered."
     }
 
     // TODO: ループで全パターンやる
@@ -392,7 +392,7 @@ class PersonApiSpec extends Specification {
         )
       )
       status(result) mustEqual OK
-      contentAsString(result) mustEqual "登録完了"
+      contentAsString(result) mustEqual "Has registered."
     }
 
     "be success. If the favorite numbers exists." in new WithApplication {
@@ -415,7 +415,7 @@ class PersonApiSpec extends Specification {
         )
       )
       status(result) mustEqual OK
-      contentAsString(result) mustEqual "登録完了"
+      contentAsString(result) mustEqual "Has registered."
     }
 
   }
