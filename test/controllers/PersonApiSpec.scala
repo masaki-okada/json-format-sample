@@ -21,7 +21,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -50,7 +50,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -80,7 +80,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -111,7 +111,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -142,7 +142,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -174,7 +174,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -205,7 +205,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -236,7 +236,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -267,7 +267,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -298,7 +298,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -330,7 +330,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -352,7 +352,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -376,7 +376,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
@@ -399,7 +399,7 @@ class PersonApiSpec extends Specification {
       val Some(result) = route(
         FakeRequest(
           POST
-          , "/api/v1/person/add"
+          , "/api/v1/person/register"
           , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
           , Json.parse(
             """
