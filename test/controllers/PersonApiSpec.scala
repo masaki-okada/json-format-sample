@@ -15,10 +15,10 @@ import play.api.test._
 @RunWith(classOf[JUnitRunner])
 class PersonApiSpec extends Specification {
 
-  "PersonApi" should {
+  "PersonApi#add" should {
     val API = "/api/persion/add"
 
-    "add 異常系" in new WithApplication {
+    "missing path error, age, name" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -29,8 +29,8 @@ class PersonApiSpec extends Specification {
               |{
               | "aaa": 1
               | , "bbb": {
-              |   "fName": "fName"
-              |   , "lName": "lName"
+              |   "ccc": "firstName"
+              |   , "ddd": "lastName"
               | }
               |}
             """.stripMargin)
@@ -47,7 +47,38 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "add 正常系1" in new WithApplication {
+    "max length error of middle name" in new WithApplication {
+      val Some(result) = route(
+        FakeRequest(
+          POST
+          , API
+          , FakeHeaders(Seq(CONTENT_TYPE -> "application/json"))
+          , Json.parse(
+            """
+              |{
+              | "age": 1
+              | , "name": {
+              |   "firstName": "firstName"
+              |   , "middleName": "012345678901234567890"
+              |   , "lastName": "lastName"
+              | }
+              |}
+            """.stripMargin)
+        )
+      )
+      status(result) mustEqual BAD_REQUEST
+      contentAsJson(result) mustEqual Json.parse(
+        """
+          |{
+          |    "obj.name.middleName": [{
+          |        "msg": ["error.maxLength"]
+          |        , "args": [20]
+          |    }]
+          |}
+        """.stripMargin
+      )
+
+    "success" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -58,8 +89,8 @@ class PersonApiSpec extends Specification {
               |{
               | "age": 36
               | , "name": {
-              |   "firstName": "fName"
-              |   , "lastName": "lName"
+              |   "firstName": "firstName"
+              |   , "lastName": "lastName"
               | }
               |}
             """.stripMargin)
@@ -69,7 +100,7 @@ class PersonApiSpec extends Specification {
       contentAsString(result) mustEqual "登録完了"
     }
 
-    "add 正常系2" in new WithApplication {
+    "append option type middle name" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -80,9 +111,9 @@ class PersonApiSpec extends Specification {
               |{
               | "age": 36
               | , "name": {
-              |   "firstName": "fName"
+              |   "firstName": "firstName"
               |   , "middleName": "せばすちゃん"
-              |   , "lastName": "lName"
+              |   , "lastName": "lastName"
               | }
               |}
             """.stripMargin)
