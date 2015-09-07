@@ -15,7 +15,7 @@ case class PersonDto(
 object PersonDto {
   implicit val reader: Reads[PersonDto] = (
     (__ \ "age").read[Int](min(0) <~ max(200)) and
-      (__ \ "bloodType").readNullable[String](pattern(regex = new Regex("""^[A|B|O|AB]{1}$"""), error = "")) and
+      (__ \ "bloodType").readNullable[String](pattern(regex = new Regex("""^[A|B|O|AB]{1}$"""), error = "A or B or O or AB")) and
       (__ \ "name").read[NameDto]
     )(PersonDto.apply _)
 

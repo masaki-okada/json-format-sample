@@ -137,7 +137,7 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "display json parse error caused by PersonDto(first name is less than minimum length)" in new WithApplication {
+    "display json parse error caused by NameDto(first name is less than minimum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -168,7 +168,7 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "display json parse error caused by PersonDto(first name is more than maximum length)" in new WithApplication {
+    "display json parse error caused by NameDto(first name is more than maximum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -199,7 +199,7 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "display json parse error caused by PersonDto(last name is less than minimum length)" in new WithApplication {
+    "display json parse error caused by NameDto(last name is less than minimum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -230,7 +230,7 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "display json parse error caused by PersonDto(last name is more than maximum length)" in new WithApplication {
+    "display json parse error caused by NameDto(last name is more than maximum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
@@ -261,7 +261,7 @@ class PersonApiSpec extends Specification {
       )
     }
 
-    "display json parse error caused by PersonDto(middle name is more than maximum length)" in new WithApplication {
+    "display json parse error caused by NameDto(middle name is more than maximum length)" in new WithApplication {
       val Some(result) = route(
         FakeRequest(
           POST
