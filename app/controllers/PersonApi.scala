@@ -1,21 +1,36 @@
 package controllers
 
-import models.PersonDto
+import models.PersonPm
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.JsError
 import play.api.mvc._
 
+import scala.concurrent.Future
+
 class PersonApi extends Controller {
 
-  /**
-   * 追加
-   * @return
-   */
-  def add = Action(parse.json) { implicit request =>
-    request.body.validate[PersonDto].map { person =>
-      Ok("登録完了")
-    }.recoverTotal { errors =>
-//      BadRequest(JsError.toJson(e = errors))
-      BadRequest("親切なエラーメッセージ")
+  def register1 = Action(parse.json) { implicit request =>
+    request.body.validate[PersonPm].map { person =>
+      Ok("Has registered.")
+    }.recoverTotal { error =>
+      val errorJSON = JsError.toJson(e = error)
+      BadRequest(errorJSON)
+    }
+  }
+
+  def register2 = Action.async(parse.json) { implicit request =>
+    val futurePerson = Future {
+      request.body.validate[PersonPm].map { person =>
+        person
+      }.recoverTotal { error =>
+        JsError.toJson(e = error)
+      }
+    }
+
+    val timeoutFuture = play.api.libs.concurrent.Promise.timeout("Oops", 1)
+    Future.firstCompletedOf(Seq(futurePerson, timeoutFuture)).map {
+      case p: PersonPm => Ok("Has registered.")
+      case t: String => InternalServerError(t)
     }
   }
 
